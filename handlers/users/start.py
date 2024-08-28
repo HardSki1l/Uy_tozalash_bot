@@ -1,16 +1,14 @@
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
 from keyboards.default.button import *
-
 from loader import dp
 from states.states import *
-from utils.db_api.databace import *
 from utils.db_api.databace import *
 
 fake_data = {}
 
-
 @dp.message_handler(CommandStart())
+
 async def bot_start(message: types.Message):
     user_id = message.from_user.id
     user = cursor.execute("SELECT * FROM users WHERE user_id=?", (user_id,)).fetchall()
@@ -70,22 +68,22 @@ async def xizmatlarr(message: types.Message):
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=xizmatlar_btn)
 
 
-@dp.message_handler(text='Jami xizmlatlar')
+@dp.message_handler(text='Jami xizmlatlar 🛠')
 async def jamixizmatlarr(message: types.Message):
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=jamixizmatlar_btn)
 
 
-@dp.message_handler(text='Nam tozalash')
+@dp.message_handler(text='Nam tozalash 💧')
 async def namxizmatlarr(message: types.Message):
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=nam_xizmatlar_btn)
 
 
-@dp.message_handler(text='RoboClenda tozalash')
+@dp.message_handler(text='RoboClenda tozalash 🤖')
 async def roboclean(message: types.Message):
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=Roboclean_btn)
 
 
-@dp.message_handler(text="Qo'shimcha xizmatlar")
+@dp.message_handler(text="Qo'shimcha xizmatlar ➕")
 async def qoshimchaxizmat(message: types.Message):
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=qoshimchaxizmatlar)
 

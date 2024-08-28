@@ -1,6 +1,7 @@
 import sqlite3
+from data.config import DB_PATH
 
-connect = sqlite3.connect('/home/hardski1l/PycharmProjects/Bot-Project/bot.db')
+connect = sqlite3.connect(f"{DB_PATH}/bot.db")
 cursor = connect.cursor()
 cursor.execute(
     "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, phone INTEGER, longitude TEXT NULL, latitude TEXT NULL,fullname TEXT NULL)")
