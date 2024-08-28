@@ -7,8 +7,8 @@ from utils.db_api.databace import *
 
 fake_data = {}
 
-@dp.message_handler(CommandStart())
 
+@dp.message_handler(CommandStart())
 async def bot_start(message: types.Message):
     user_id = message.from_user.id
     user = cursor.execute("SELECT * FROM users WHERE user_id=?", (user_id,)).fetchall()
@@ -36,7 +36,7 @@ async def phone_number(message: types.Message, state: FSMContext):
     print(True)
     contact = message.contact
     user_id = message.from_user.id
-    await add_user(user_id, int(contact.phone_number[5::1]))
+    await add_user(user_id, int(contact.phone_number))
     await message.answer("<b>Lokatsiyani🗺</b> yuboring 📍", reply_markup=lokatsion)
     await state.finish()
     await Register.location.set()
@@ -93,3 +93,52 @@ async def back(message: types.Message):
     await message.answer(f"""
 Tanlang:
     """, reply_markup=menu_btn)
+
+
+@dp.message_handler(text="Sozlamalar ⚙️")
+async def settingsuser(message: types.Message):
+    await message.answer("Tanlang ⬇️", reply_markup=settings_btn)
+
+
+@dp.message_handler(text="Telefon Nomerni O'zgartirish 📞")
+async def changephone(message: types.Message):
+    await message.answer("Yangi telefon raqamingizni yuboring")
+    await Register.phone_number.set()
+
+
++998996962112
+
+
+@dp.message_handler(state=Register.phone_number)
+async def phones(message: types.Message):
+    phone_number = message.text
+    if phone_number:
+        if message.text.startswith("+998"):
+            print(message.text[1:13])
+            user_id = message.from_user.id
+            await update_phone_number(user_id, phone_number)
+            await message.answer("Telefon raqamingiz muvaffaqiyatli o'zgartirildi ✅", reply_markup=settings_btn)
+        else:
+            await message.answer("Telefon raqamingizni +998 bilan boshlanishi kerak ❌")
+    else:
+        await message.answer("Telefon raqamingizni kiriting ❌")
+
+
+@dp.message_handler(text="Ism Familyani O'zgartirish 👤")
+async def changefullname(message: types.Message):
+    await message.answer("Yangi Ism Familyangizni yuboring")
+    await Register.fullname.set()
+
+
+@dp.message_handler(state=Register.fullname)
+async def fullnames(message: types.Message):
+    fullname = message.text
+    user_id = message.from_user.id
+    await update_fullname(user_id, fullname)
+    await message.answer("Ism Familyangiz muvaffaqiyatli o'zgartirildi ✅", reply_markup=settings_btn)
+
+
+@dp.message_handler(text="Profilni O'chirish 🗑")
+async def deleteaccount(message: types.Message):
+    await delete_user(user_id=message.from_user.id)
+    await message.answer("Profilingiz o'chirib yuborildi ✅")

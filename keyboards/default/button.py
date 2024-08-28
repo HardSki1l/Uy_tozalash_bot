@@ -58,7 +58,6 @@ xizmatlar_btn = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton("Qo'shimcha xizmatlar ➕")
-
         ],
         [
             KeyboardButton("Orqaga 🔙")
@@ -174,6 +173,20 @@ qoshimchaxizmatlar = ReplyKeyboardMarkup(
             KeyboardButton("Pardalarni yuvib dazmollash"),
             KeyboardButton("Orqaga 🔙")
         ],
+    ],
+    resize_keyboard=True
+)
+
+settings_btn = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton("Telefon Nomerni O'zgartirish 📞"),
+            KeyboardButton("Ism Familyani O'zgartirish 👤")
+        ],
+        [
+            KeyboardButton("Profilni O'chirish 🗑"),
+            KeyboardButton("Orqaga 🔙")
+        ]
     ],
     resize_keyboard=True
 )
