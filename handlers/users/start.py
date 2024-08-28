@@ -106,11 +106,8 @@ async def changephone(message: types.Message):
     await Register.phone_number.set()
 
 
-+998996962112
-
-
 @dp.message_handler(state=Register.phone_number)
-async def phones(message: types.Message):
+async def phones(message: types.Message, state: FSMContext):
     phone_number = message.text
     if phone_number:
         if message.text.startswith("+998"):
@@ -118,6 +115,7 @@ async def phones(message: types.Message):
             user_id = message.from_user.id
             await update_phone_number(user_id, phone_number)
             await message.answer("Telefon raqamingiz muvaffaqiyatli o'zgartirildi ✅", reply_markup=settings_btn)
+            await state.finish()
         else:
             await message.answer("Telefon raqamingizni +998 bilan boshlanishi kerak ❌")
     else:
@@ -131,14 +129,16 @@ async def changefullname(message: types.Message):
 
 
 @dp.message_handler(state=Register.fullname)
-async def fullnames(message: types.Message):
+async def fullnames(message: types.Message, state: FSMContext):
     fullname = message.text
     user_id = message.from_user.id
     await update_fullname(user_id, fullname)
     await message.answer("Ism Familyangiz muvaffaqiyatli o'zgartirildi ✅", reply_markup=settings_btn)
+    await state.finish()
 
 
 @dp.message_handler(text="Profilni O'chirish 🗑")
 async def deleteaccount(message: types.Message):
     await delete_user(user_id=message.from_user.id)
-    await message.answer("Profilingiz o'chirib yuborildi ✅")
+    await message.answer("Profilingiz o'chirib yuborildi ✅\n\nYangi profil yaratish uchun /start ni bosing",
+                         reply_markup=types.ReplyKeyboardRemove())
