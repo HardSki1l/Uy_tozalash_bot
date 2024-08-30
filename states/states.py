@@ -7,3 +7,7 @@ class Register(StatesGroup):
     phone_number = State()
     location = State()
     fullname = State()
+
+
+class Category(StatesGroup):
+    name = State()

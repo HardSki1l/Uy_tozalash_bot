@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
 from keyboards.default.button import *
-from loader import dp
+from loader import dp, bot
 from states.states import *
 from utils.db_api.databace import *
 
@@ -12,7 +12,6 @@ fake_data = {}
 async def bot_start(message: types.Message):
     user_id = message.from_user.id
     user = cursor.execute("SELECT * FROM users WHERE user_id=?", (user_id,)).fetchall()
-    print(user)
     if user:
         await message.answer(f"""
 Assalomu aleykum {user[0][5]}
@@ -71,21 +70,29 @@ async def xizmatlarr(message: types.Message):
 @dp.message_handler(text='Jami xizmlatlar 🛠')
 async def jamixizmatlarr(message: types.Message):
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=jamixizmatlar_btn)
+    await Category.name.set()
+
 
 
 @dp.message_handler(text='Nam tozalash 💧')
 async def namxizmatlarr(message: types.Message):
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=nam_xizmatlar_btn)
+    await Category.name.set()
+
 
 
 @dp.message_handler(text='RoboClenda tozalash 🤖')
 async def roboclean(message: types.Message):
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=Roboclean_btn)
+    await Category.name.set()
+
 
 
 @dp.message_handler(text="Qo'shimcha xizmatlar ➕")
 async def qoshimchaxizmat(message: types.Message):
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=qoshimchaxizmatlar)
+    await Category.name.set()
+
 
 
 @dp.message_handler(text="Orqaga 🔙", state="*")
@@ -142,3 +149,29 @@ async def deleteaccount(message: types.Message):
     await delete_user(user_id=message.from_user.id)
     await message.answer("Profilingiz o'chirib yuborildi ✅\n\nYangi profil yaratish uchun /start ni bosing",
                          reply_markup=types.ReplyKeyboardRemove())
+
+async def generate_map_link(latitude, longitude):
+    base_url = "https://www.google.com/maps?q="
+    return f"{base_url}{latitude},{longitude}"
+
+@dp.message_handler(state=Category.name)
+async def send_group_for_category(message: types.Message, state:FSMContext):
+    global latitude_user_map
+    global longitude_user_map
+    await state.finish()
+    category_name = message.text
+
+    user_id = message.from_user.id
+    user = cursor.execute("SELECT * FROM users WHERE user_id=?", (user_id,)).fetchall()
+
+    txt = ""
+    for i in user:
+        latitude_user_map = i[4]
+        longitude_user_map = i[3]
+    link = await generate_map_link(latitude_user_map,longitude_user_map)
+    for i in user:
+        txt += f"""<b>Zakaz: {category_name}✅</b>\n\n\n<b>Foydalanuvchi raqami:  <i>+{i[2]}</i>📞</b>\n\n<b>Foydalanuvchi Ismi: <i>{i[5]}👤</i></b>\n\n<b> Lakatsiya 📍:  <a href="{link}">Lalatsiya</a></b>"""
+
+    print(txt)
+    await message.answer("Sizning sorovingiz yuborildi✅")
+    await bot.send_message(chat_id = -1002173612484, text=txt)
