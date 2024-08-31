@@ -190,3 +190,12 @@ settings_btn = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True
 )
+
+admin_btn = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Statistika 📊 "),
+        ],
+    ],
+    resize_keyboard=True
+)

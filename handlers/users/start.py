@@ -1,5 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
+from aiogram.types import InlineKeyboardButton
+
 from keyboards.default.button import *
 from loader import dp, bot
 from states.states import *
@@ -26,6 +28,8 @@ Bizning botimizga xush kelibsiz ✋🏼
 
 @dp.message_handler(text="Uzbekcha🇺🇿")
 async def uzb_starthandler(message: types.Message):
+    user_id = message.from_user.id
+    await record_stat(user_id)
     await message.answer("<b>Telefon</b> raqamingizni yuboring ☎️", reply_markup=phone_number_btn)
     await Register.phone_number.set()
 
@@ -44,6 +48,8 @@ async def phone_number(message: types.Message, state: FSMContext):
 @dp.message_handler(state=Register.location, content_types=types.ContentType.LOCATION)
 async def location(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
+    await record_stat(user_id)
+    user_id = message.from_user.id
     longitude = message.location.longitude
     latitude = message.location.latitude
     await update_location(user_id, longitude, latitude)
@@ -56,6 +62,8 @@ async def location(message: types.Message, state: FSMContext):
 @dp.message_handler(state=Register.fullname)
 async def fullnamesave(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
+    await record_stat(user_id)
+    user_id = message.from_user.id
     fullname = message.text
     await update_fullname(user_id, fullname)
     await message.answer("Siz muvaffaqiyatli ro'yhatdan o'tdingiz ✅", reply_markup=menu_btn)
@@ -64,11 +72,15 @@ async def fullnamesave(message: types.Message, state: FSMContext):
 
 @dp.message_handler(text='Xizmatlar 💼')
 async def xizmatlarr(message: types.Message):
+    user_id = message.from_user.id
+    await record_stat(user_id)
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=xizmatlar_btn)
 
 
 @dp.message_handler(text='Jami xizmlatlar 🛠')
 async def jamixizmatlarr(message: types.Message):
+    user_id = message.from_user.id
+    await record_stat(user_id)
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=jamixizmatlar_btn)
     await Category.name.set()
 
@@ -76,6 +88,8 @@ async def jamixizmatlarr(message: types.Message):
 
 @dp.message_handler(text='Nam tozalash 💧')
 async def namxizmatlarr(message: types.Message):
+    user_id = message.from_user.id
+    await record_stat(user_id)
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=nam_xizmatlar_btn)
     await Category.name.set()
 
@@ -83,6 +97,8 @@ async def namxizmatlarr(message: types.Message):
 
 @dp.message_handler(text='RoboClenda tozalash 🤖')
 async def roboclean(message: types.Message):
+    user_id = message.from_user.id
+    await record_stat(user_id)
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=Roboclean_btn)
     await Category.name.set()
 
@@ -90,6 +106,8 @@ async def roboclean(message: types.Message):
 
 @dp.message_handler(text="Qo'shimcha xizmatlar ➕")
 async def qoshimchaxizmat(message: types.Message):
+    user_id = message.from_user.id
+    await record_stat(user_id)
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=qoshimchaxizmatlar)
     await Category.name.set()
 
@@ -97,6 +115,8 @@ async def qoshimchaxizmat(message: types.Message):
 
 @dp.message_handler(text="Orqaga 🔙", state="*")
 async def back(message: types.Message):
+    user_id = message.from_user.id
+    await record_stat(user_id)
     await message.answer(f"""
 Tanlang:
     """, reply_markup=menu_btn)
@@ -104,6 +124,8 @@ Tanlang:
 
 @dp.message_handler(text="Sozlamalar ⚙️")
 async def settingsuser(message: types.Message):
+    user_id = message.from_user.id
+    await record_stat(user_id)
     await message.answer("Tanlang ⬇️", reply_markup=settings_btn)
 
 
@@ -116,6 +138,8 @@ async def changephone(message: types.Message):
 @dp.message_handler(state=Register.phone_number)
 async def phones(message: types.Message, state: FSMContext):
     phone_number = message.text
+    user_id = message.from_user.id
+    await record_stat(user_id)
     if phone_number:
         if message.text.startswith("+998"):
             print(message.text[1:13])
@@ -131,12 +155,16 @@ async def phones(message: types.Message, state: FSMContext):
 
 @dp.message_handler(text="Ism Familyani O'zgartirish 👤")
 async def changefullname(message: types.Message):
+    user_id = message.from_user.id
+    await record_stat(user_id)
     await message.answer("Yangi Ism Familyangizni yuboring")
     await Register.fullname.set()
 
 
 @dp.message_handler(state=Register.fullname)
 async def fullnames(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+    await record_stat(user_id)
     fullname = message.text
     user_id = message.from_user.id
     await update_fullname(user_id, fullname)
@@ -147,6 +175,8 @@ async def fullnames(message: types.Message, state: FSMContext):
 @dp.message_handler(text="Profilni O'chirish 🗑")
 async def deleteaccount(message: types.Message):
     await delete_user(user_id=message.from_user.id)
+    user_id = message.from_user.id
+    await record_stat(user_id)
     await message.answer("Profilingiz o'chirib yuborildi ✅\n\nYangi profil yaratish uchun /start ni bosing",
                          reply_markup=types.ReplyKeyboardRemove())
 
@@ -154,14 +184,23 @@ async def generate_map_link(latitude, longitude):
     base_url = "https://www.google.com/maps?q="
     return f"{base_url}{latitude},{longitude}"
 
+
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
 @dp.message_handler(state=Category.name)
 async def send_group_for_category(message: types.Message, state:FSMContext):
+    user_id = message.from_user.id
+    await record_stat(user_id)
+    user_id = message.from_user.id
+    keyboard_inline = InlineKeyboardMarkup()
+    ha_button = InlineKeyboardButton(text="Ha✅", callback_data=f"ha {user_id}")
+    yoq_button = InlineKeyboardButton(text="Yoq❌", callback_data=f"yoq {user_id}")
+    keyboard_inline.add(ha_button, yoq_button)
     global latitude_user_map
     global longitude_user_map
     await state.finish()
     category_name = message.text
 
-    user_id = message.from_user.id
     user = cursor.execute("SELECT * FROM users WHERE user_id=?", (user_id,)).fetchall()
 
     txt = ""
@@ -174,4 +213,72 @@ async def send_group_for_category(message: types.Message, state:FSMContext):
 
     print(txt)
     await message.answer("Sizning sorovingiz yuborildi✅")
-    await bot.send_message(chat_id = -1002173612484, text=txt)
+    await bot.send_message(chat_id = -1002173612484, text=txt, reply_markup=keyboard_inline)
+
+@dp.callback_query_handler(lambda c: c.data and c.data.startswith("ha"))
+async def process_ha_callback(callback_query: types.CallbackQuery):
+    user_id = callback_query.message.from_user.id
+    await record_stat(user_id)
+    user_id = callback_query.data.split()[1]
+    await callback_query.message.answer(f"Foydalanuvchi zakazi qabul qilindi✅")
+    await callback_query.bot.send_message(user_id, "<b>Sizning zakazingiz qabul qilindi✅</b>")
+
+
+@dp.callback_query_handler(lambda c: c.data and c.data.startswith("yoq"))
+async def process_yoq_callback(callback_query: types.CallbackQuery):
+    user_id = callback_query.message.from_user.id
+    await record_stat(user_id)
+    user_id = callback_query.data.split()[1]
+    await callback_query.message.answer(f"Foydalanuvchi zakazi rad etildi❌")
+    await callback_query.bot.send_message(user_id, "<b>Sizning zakazingiz qabul qilinmadi❌\n\n⚠️<b>Bizda hozirda bunday hizmat mavjud emas</b></b>")
+
+
+
+
+con = sqlite3.connect(f'{DB_PATH}/stats.db')
+cur = con.cursor()
+
+cur.execute('''CREATE TABLE IF NOT EXISTS stats
+                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                   user_id INTEGER,
+                   date DATE)''')
+
+con.commit()
+
+
+async def record_stat(user_id):
+    cur.execute("INSERT INTO stats (user_id, date) VALUES (?, DATE('now'))", (user_id,))
+    con.commit()
+
+
+@dp.message_handler(commands="admin", state="*")
+async def admin_panel(message: types.Message , state: FSMContext):
+    await state.finish()
+    await record_stat(message.from_user.id)
+    user = message.from_user.id
+    Admins = 259083453, 2020292717
+    if user in Admins:
+        await message.answer("<b>Siz bu botda adminsiz 📌️</b>", reply_markup=admin_btn)
+    else:
+        pass
+
+
+@dp.message_handler(text="Statistika 📊")
+async def show_stats(message: types.Message):
+    await record_stat(message.from_user.id)
+    cur.execute("SELECT COUNT(DISTINCT user_id) FROM stats")
+    total_users = cur.fetchone()[0]
+    cur.execute("SELECT COUNT(DISTINCT user_id) FROM stats WHERE date = DATE('now')")
+    today_users = cur.fetchone()[0]
+    cur.execute("SELECT COUNT(*) FROM stats")
+    total_requests = cur.fetchone()[0]
+    cur.execute("SELECT COUNT(*) FROM stats WHERE date = DATE('now')")
+    today_requests = cur.fetchone()[0]
+    text = f"📊 Botdan foydalanish statistikasi:\n" \
+           f" ├ Jami foydalanuvchilar: {total_users}\n" \
+           f" ├ Bugungi foydalanuvchilar: {today_users}\n" \
+           f" ├ Jami so'rovlar: {total_requests}\n" \
+           f" └ Bugungi so'rovlar: {today_requests}"
+    await message.reply(text)
+
+
