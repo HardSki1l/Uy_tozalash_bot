@@ -186,34 +186,43 @@ async def generate_map_link(latitude, longitude):
 
 
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-
+all_category = []
 @dp.message_handler(state=Category.name)
 async def send_group_for_category(message: types.Message, state:FSMContext):
+    print(True)
     user_id = message.from_user.id
-    await record_stat(user_id)
-    user_id = message.from_user.id
-    keyboard_inline = InlineKeyboardMarkup()
-    ha_button = InlineKeyboardButton(text="Ha✅", callback_data=f"ha {user_id}")
-    yoq_button = InlineKeyboardButton(text="Yoq❌", callback_data=f"yoq {user_id}")
-    keyboard_inline.add(ha_button, yoq_button)
-    global latitude_user_map
-    global longitude_user_map
-    await state.finish()
     category_name = message.text
+    print(category_name)
+    message_id = message.message_id
+    if category_name in all_category:
+        result = await add_choise_category(user_id=user_id, choises=category_name,message_id=message_id)
+        await message.answer(result)
 
-    user = cursor.execute("SELECT * FROM users WHERE user_id=?", (user_id,)).fetchall()
 
-    txt = ""
-    for i in user:
-        latitude_user_map = i[4]
-        longitude_user_map = i[3]
-    link = await generate_map_link(latitude_user_map,longitude_user_map)
-    for i in user:
-        txt += f"""<b>Zakaz: {category_name}✅</b>\n\n\n<b>Foydalanuvchi raqami:  <i>+{i[2]}</i>📞</b>\n\n<b>Foydalanuvchi Ismi: <i>{i[5]}👤</i></b>\n\n<b> Lakatsiya 📍:  <a href="{link}">Lalatsiya</a></b>"""
-
-    print(txt)
-    await message.answer("Sizning sorovingiz yuborildi✅")
-    await bot.send_message(chat_id = -1002173612484, text=txt, reply_markup=keyboard_inline)
+    # await record_stat(user_id)
+    # user_id = message.from_user.id
+    # keyboard_inline = InlineKeyboardMarkup()
+    # ha_button = InlineKeyboardButton(text="Ha✅", callback_data=f"ha {user_id}")
+    # yoq_button = InlineKeyboardButton(text="Yoq❌", callback_data=f"yoq {user_id}")
+    # keyboard_inline.add(ha_button, yoq_button)
+    # global latitude_user_map
+    # global longitude_user_map
+    # await state.finish()
+    # category_name = message.text
+    #
+    # user = cursor.execute("SELECT * FROM users WHERE user_id=?", (user_id,)).fetchall()
+    #
+    # txt = ""
+    # for i in user:
+    #     latitude_user_map = i[4]
+    #     longitude_user_map = i[3]
+    # link = await generate_map_link(latitude_user_map,longitude_user_map)
+    # for i in user:
+    #     txt += f"""<b>Zakaz: {category_name}✅</b>\n\n\n<b>Foydalanuvchi raqami:  <i>+{i[2]}</i>📞</b>\n\n<b>Foydalanuvchi Ismi: <i>{i[5]}👤</i></b>\n\n<b> Lakatsiya 📍:  <a href="{link}">Lalatsiya</a></b>"""
+    #
+    # print(txt)
+    # await message.answer("Sizning sorovingiz yuborildi✅")
+    # await bot.send_message(chat_id = -1002173612484, text=txt, reply_markup=keyboard_inline)
 
 @dp.callback_query_handler(lambda c: c.data and c.data.startswith("ha"))
 async def process_ha_callback(callback_query: types.CallbackQuery):

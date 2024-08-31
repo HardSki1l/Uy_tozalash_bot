@@ -65,7 +65,13 @@ xizmatlar_btn = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True
 )
+list1 = ["Hamma changini olish","Gilamni changini olish","Oboy changini olish","Qandillarning changini olish","Shift changini olish",
 
+"Hammom tozalash",
+"Tualet tozalash",
+"Oynalarni tozalash",
+"Mebellarni changini olish"
+         ]
 jamixizmatlar_btn = ReplyKeyboardMarkup(
     keyboard=[
         [
@@ -146,6 +152,7 @@ Roboclean_btn = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True
 )
+
 
 qoshimchaxizmatlar = ReplyKeyboardMarkup(
     keyboard=[
