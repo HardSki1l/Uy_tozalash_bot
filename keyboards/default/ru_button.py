@@ -1,9 +1,8 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, KeyboardButtonRequestUser
-
 change_language_ru = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Узбекча🇺🇿"),
+            KeyboardButton(text="Uzbekcha🇺🇿"),
             KeyboardButton(text="Русский🇷🇺")
         ],
     ],
@@ -23,7 +22,7 @@ phone_number_btn_ru = ReplyKeyboardMarkup(
 lokatsion_ru = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Отправить местоположение📍", request_location=True)
+            KeyboardButton(text="Отправить локацию📍", request_location=True)
         ],
     ],
     resize_keyboard=True
@@ -50,11 +49,11 @@ xizmatlar_btn_ru = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton("Все услуги 🛠"),
-            KeyboardButton("Очистка Нама 💧")
+            KeyboardButton("Мокрая уборка 💧")
         ],
         [
-            KeyboardButton("Общее очищение 🏚"),
-            KeyboardButton("Очистка RoboClenda 🤖")
+            KeyboardButton("Общая уборка 🏚"),
+            KeyboardButton("Уборка RoboClenda 🤖")
         ],
         [
             KeyboardButton("Дополнительные услуги ➕")
@@ -69,23 +68,23 @@ xizmatlar_btn_ru = ReplyKeyboardMarkup(
 jamixizmatlar_btn_ru = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton("Удаление пыли с ковра"),
-            KeyboardButton("Удаление пыли с ковра")
+            KeyboardButton("Сухая уборка"),
+            KeyboardButton("Чистка ковра")
         ],
         [
-            KeyboardButton("Удаление пыли с обоев"),
-            KeyboardButton("Удаление пыли с жалюзи")
+            KeyboardButton("Чистка обоев"),
+            KeyboardButton("Чистка люстр")
         ],
         [
-            KeyboardButton("Удаление пыли с потолка"),
-            KeyboardButton("Очищение ванной")
+            KeyboardButton("Чистка потолка"),
+            KeyboardButton("Уборка ванной")
         ],
         [
-            KeyboardButton("Очищение туалета"),
-            KeyboardButton("Очищение окон")
+            KeyboardButton("Уборка туалета"),
+            KeyboardButton("Мойка окон")
         ],
         [
-            KeyboardButton("Очищение мебели"),
+            KeyboardButton("Чистка мебели"),
         ],
         [
             KeyboardButton("Назад 🔙")
@@ -97,15 +96,15 @@ jamixizmatlar_btn_ru = ReplyKeyboardMarkup(
 nam_xizmatlar_btn_ru = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton("Удаление пыли с пола"),
-            KeyboardButton("Удаление пыли с ковра")
+            KeyboardButton("Мойка пола"),
+            KeyboardButton("Чистка ковра")
         ],
         [
-            KeyboardButton("Очищение санузла"),
-            KeyboardButton("Очищение окон")
+            KeyboardButton("Уборка санузла"),
+            KeyboardButton("Мойка окон")
         ],
         [
-            KeyboardButton("Очищение мебели")
+            KeyboardButton("Чистка мебели")
         ],
         [
             KeyboardButton("Назад 🔙")
@@ -117,28 +116,28 @@ nam_xizmatlar_btn_ru = ReplyKeyboardMarkup(
 Roboclean_btn_ru = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton("Удаление пыли с пола"),
-            KeyboardButton("Удаление пыли с ковра")
+            KeyboardButton("Мойка пола"),
+            KeyboardButton("Чистка ковра")
         ],
         [
-            KeyboardButton("Удаление пыли с обоев"),
-            KeyboardButton("Удаление пыли с жалюзи")
+            KeyboardButton("Чистка обоев"),
+            KeyboardButton("Чистка люстр")
         ],
         [
-            KeyboardButton("Удаление пыли с потолка"),
-            KeyboardButton("Очищение ванной")
+            KeyboardButton("Чистка потолка"),
+            KeyboardButton("Уборка ванной")
         ],
         [
-            KeyboardButton("Очищение туалета"),
-            KeyboardButton("Очищение окон")
+            KeyboardButton("Уборка туалета"),
+            KeyboardButton("Мойка окон")
         ],
         [
-            KeyboardButton("Очищение мебели"),
+            KeyboardButton("Чистка мебели"),
             KeyboardButton("Стирка ковров на месте")
         ],
         [
-            KeyboardButton("Чистка диванов"),
-            KeyboardButton("Чистка матрасов")
+            KeyboardButton("Химчистка дивана"),
+            KeyboardButton("Химчистка матраса")
         ],
         [
             KeyboardButton("Назад 🔙")
@@ -150,7 +149,7 @@ Roboclean_btn_ru = ReplyKeyboardMarkup(
 qoshimchaxizmatlar_ru = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton("Мытье посуды"),
+            KeyboardButton("Мойка посуды"),
             KeyboardButton("Упорядочение одежды")
         ],
         [
@@ -158,11 +157,11 @@ qoshimchaxizmatlar_ru = ReplyKeyboardMarkup(
             KeyboardButton("Упорядочение вещей")
         ],
         [
-            KeyboardButton("Утюжка одежды"),
-            KeyboardButton("Чистка ковров")
+            KeyboardButton("Глажка одежды"),
+            KeyboardButton("Чистка брусчатки")
         ],
         [
-            KeyboardButton("Чистка холодильника"),
+            KeyboardButton("Чистка плитки"),
             KeyboardButton("Газонокосилка")
         ],
         [
@@ -170,7 +169,7 @@ qoshimchaxizmatlar_ru = ReplyKeyboardMarkup(
             KeyboardButton("Дезинфекция")
         ],
         [
-            KeyboardButton("Стирка и утюжка штор"),
+            KeyboardButton("Стирка и глажка штор"),
             KeyboardButton("Назад 🔙")
         ],
     ],
@@ -187,6 +186,15 @@ settings_btn_ru = ReplyKeyboardMarkup(
             KeyboardButton("Удалить профиль 🗑"),
             KeyboardButton("Назад 🔙")
         ]
+    ],
+    resize_keyboard=True
+)
+
+admin_btn_ru = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Статистика 📊"),
+        ],
     ],
     resize_keyboard=True
 )
