@@ -33,11 +33,15 @@ cursor.execute(
     "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, phone TEXT, longitude TEXT NULL, latitude TEXT NULL,fullname TEXT NULL)")
 
 
-# cursor.execute("CREATE TABLE choise_table (id INTEGER PRIMARY KEY AUTOINCREMENT,message_id INTEGER,choises TEXT,user_id INTEGER UNIQUE)")
+cursor.execute("CREATE TABLE IF NOT EXISTS choise_table (id INTEGER PRIMARY KEY AUTOINCREMENT,message_id INTEGER,choises TEXT,user_id INTEGER UNIQUE)")
 async def add_choise_category(message_id, user_id, choises):
-    result = cursor.execute("SELECT * FROM choise_table WHERE user_id=?", (int(user_id),))
+    result = cursor.execute("SELECT * FROM choise_table WHERE user_id=?", (int(user_id),)).fetchone()
+    print(result)
     if result is None:
-        cursor.execute("INSERT INTO choise_table VALUES (?,?,?)", (message_id, str(choises + "//"), user_id))
+        cursor.execute(
+            "INSERT INTO choise_table (message_id, choises, user_id) VALUES (?, ?, ?)",
+            (message_id, str(choises + "//"), user_id)
+        )
         connect.commit()
         print("A")
         return choises + "//"
@@ -45,12 +49,14 @@ async def add_choise_category(message_id, user_id, choises):
         print("B")
         cursor.execute("SELECT choises FROM choise_table WHERE user_id=?", (int(user_id),))
         old_choises = cursor.fetchone()
+        print(old_choises)
         if old_choises:
-            print("Cnb ")
+            print("C")
             old_choises = old_choises[0]
-            updated_choises = f"{old_choises}//{choises}"
+            updated_choises = f"{old_choises}{choises}//"
             cursor.execute("UPDATE choise_table SET choises=? WHERE user_id=?", (updated_choises, int(user_id)))
             connect.commit()
+
             return updated_choises
 
 

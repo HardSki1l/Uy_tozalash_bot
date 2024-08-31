@@ -184,9 +184,9 @@ async def generate_map_link(latitude, longitude):
     base_url = "https://www.google.com/maps?q="
     return f"{base_url}{latitude},{longitude}"
 
-
+from utils.db_api.databace import category_all
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-all_category = []
+# all_category = []
 @dp.message_handler(state=Category.name)
 async def send_group_for_category(message: types.Message, state:FSMContext):
     print(True)
@@ -194,9 +194,12 @@ async def send_group_for_category(message: types.Message, state:FSMContext):
     category_name = message.text
     print(category_name)
     message_id = message.message_id
-    if category_name in all_category:
+    if category_name in category_all:
         result = await add_choise_category(user_id=user_id, choises=category_name,message_id=message_id)
         await message.answer(result)
+    else:
+        print("Bunday bo`lim mavjud emas")
+        return "Salom"
 
 
     # await record_stat(user_id)
