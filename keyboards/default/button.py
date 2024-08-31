@@ -33,8 +33,11 @@ menu_btn = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton("Xizmatlar 💼"),
-            KeyboardButton("Savat 🛒")
         ],
+        [
+            KeyboardButton(text="Savatcha 🛒")
+        ]
+        ,
         [
             KeyboardButton("Taklif Shikoyatlar ✍️"),
             KeyboardButton("Ijtimoiy Tarmoqlar 🌐")
@@ -205,4 +208,15 @@ admin_btn = ReplyKeyboardMarkup(
         ],
     ],
     resize_keyboard=True
+)
+
+
+savat_btn = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Zakazni tasdiqlash✅")
+        ]
+    ],
+    resize_keyboard=True,
+    one_time_keyboard=True
 )

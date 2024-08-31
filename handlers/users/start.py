@@ -1,3 +1,5 @@
+from venv import logger
+
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
 from aiogram.types import InlineKeyboardButton
@@ -114,7 +116,8 @@ async def qoshimchaxizmat(message: types.Message):
 
 
 @dp.message_handler(text="Orqaga 🔙", state="*")
-async def back(message: types.Message):
+async def back(message: types.Message, state:FSMContext):
+    await state.finish()
     user_id = message.from_user.id
     await record_stat(user_id)
     await message.answer(f"""
@@ -180,6 +183,61 @@ async def deleteaccount(message: types.Message):
     await message.answer("Profilingiz o'chirib yuborildi ✅\n\nYangi profil yaratish uchun /start ni bosing",
                          reply_markup=types.ReplyKeyboardRemove())
 
+
+@dp.message_handler(text="Savatcha 🛒")
+async def savat(message: types.Message):
+    user_id = message.from_user.id
+    result = cursor.execute("SELECT choises FROM choise_table WHERE user_id=?", (int(user_id),)).fetchone()
+    print(result)
+    a = ""
+    if result:
+        choises = result[0]
+        choises_list = choises.split("//")
+        for choise in choises_list:
+            a += choise + "\n"
+
+    print(a)
+
+    await message.answer(f"<i><b>{message.from_user.full_name}</b></i> - Sizning zakazlaringiz👇🏻\n\n<i>{a}</i>", reply_markup=savat_btn)
+
+@dp.message_handler(text="Zakazni tasdiqlash✅")
+async def zakaz(message:types.Message):
+    user_id = message.from_user.id
+    result = cursor.execute("SELECT choises FROM choise_table WHERE user_id=?", (int(user_id),)).fetchone()
+    print(result)
+
+    a = ""
+    if result:
+        choises = result[0]
+        choises_list = choises.split("//")
+        for choise in choises_list:
+            a += choise + "\n"
+    await record_stat(user_id)
+    user_id = message.from_user.id
+    keyboard_inline = InlineKeyboardMarkup()
+    ha_button = InlineKeyboardButton(text="Ha✅", callback_data=f"ha {user_id}")
+    yoq_button = InlineKeyboardButton(text="Yoq❌", callback_data=f"yoq {user_id}")
+    keyboard_inline.add(ha_button, yoq_button)
+
+    global latitude_user_map
+    global longitude_user_map
+    category_name = a
+
+    user = cursor.execute("SELECT * FROM users WHERE user_id=?", (user_id,)).fetchall()
+
+    txt = ""
+    for i in user:
+        latitude_user_map = i[4]
+        longitude_user_map = i[3]
+    link = await generate_map_link(latitude_user_map,longitude_user_map)
+    for i in user:
+        txt += f"""<b>Zakaz👇🏻✅\n\n{category_name}</b>\n\n\n<b>Foydalanuvchi raqami:  <i>+{i[2]}</i>📞</b>\n\n<b>Foydalanuvchi Ismi: <i>{i[5]}👤</i></b>\n\n<b> Lakatsiya 📍:  <a href="{link}">Lalatsiya</a></b>"""
+
+    print(txt)
+    await message.answer("Sizning sorovingiz yuborildi✅", reply_markup=menu_btn)
+    await bot.send_message(chat_id = -4568026716, text=txt, reply_markup=keyboard_inline)
+    cursor.execute("DELETE FROM choise_table WHERE user_id=?", (int(user_id),))
+    connect.commit()
 async def generate_map_link(latitude, longitude):
     base_url = "https://www.google.com/maps?q="
     return f"{base_url}{latitude},{longitude}"
@@ -233,7 +291,10 @@ async def process_ha_callback(callback_query: types.CallbackQuery):
     await record_stat(user_id)
     user_id = callback_query.data.split()[1]
     await callback_query.message.answer(f"Foydalanuvchi zakazi qabul qilindi✅")
-    await callback_query.bot.send_message(user_id, "<b>Sizning zakazingiz qabul qilindi✅</b>")
+    await callback_query.bot.send_message(user_id, """<b><b>Хурматли мижоз сизнинг буюртмангиз кабул килинди ✅
+
+Тез орада 770808848 / 770404434
+Ушбу ракамлар оркали сизга богланишади.</b></b>""")
 
 
 @dp.callback_query_handler(lambda c: c.data and c.data.startswith("yoq"))
@@ -292,5 +353,4 @@ async def show_stats(message: types.Message):
            f" ├ Jami so'rovlar: {total_requests}\n" \
            f" └ Bugungi so'rovlar: {today_requests}"
     await message.reply(text)
-
 

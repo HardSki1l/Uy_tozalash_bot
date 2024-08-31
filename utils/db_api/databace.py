@@ -86,3 +86,4 @@ async def update_phone_number(user_id, phone):
 async def delete_user(user_id):
     cursor.execute("DELETE FROM users WHERE user_id = ?", (user_id,))
     connect.commit()
+
