@@ -205,6 +205,7 @@ admin_btn = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton(text="Statistika 📊 "),
+            KeyboardButton(text="Foydalanuvchilar 👥")
         ],
     ],
     resize_keyboard=True

@@ -6,6 +6,8 @@ __pycache__/
 # C extensions
 *.so
 bot.db
+stats.db
+users_data.xlsx
 # Distribution / packaging
 .Python
 build/

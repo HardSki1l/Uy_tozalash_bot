@@ -2,7 +2,7 @@ from venv import logger
 
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
-from aiogram.types import InlineKeyboardButton
+from aiogram.types import InlineKeyboardButton, InputFile
 
 from keyboards.default.button import *
 from loader import dp, bot
@@ -324,14 +324,14 @@ async def record_stat(user_id):
     cur.execute("INSERT INTO stats (user_id, date) VALUES (?, DATE('now'))", (user_id,))
     con.commit()
 
+Admins_forBot = 259083453, 2020292717
 
 @dp.message_handler(commands="admin", state="*")
 async def admin_panel(message: types.Message , state: FSMContext):
     await state.finish()
     await record_stat(message.from_user.id)
     user = message.from_user.id
-    Admins = 259083453, 2020292717
-    if user in Admins:
+    if user in Admins_forBot:
         await message.answer("<b>Siz bu botda adminsiz 📌️</b>", reply_markup=admin_btn)
     else:
         pass
@@ -354,4 +354,31 @@ async def show_stats(message: types.Message):
            f" ├ Jami so'rovlar: {total_requests}\n" \
            f" └ Bugungi so'rovlar: {today_requests}"
     await message.reply(text)
+
+@dp.message_handler(text="Foydalanuvchilar 👥")
+async def check_user(message: types.Message):
+    if message.from_user.id in Admins_forBot:
+        from openpyxl import Workbook
+        from utils.db_api.databace import cursor
+
+        # SQL so'rovini bajarish va natijalarni olish
+        cursor.execute("SELECT user_id, phone, fullname FROM users")
+        filtered_data = cursor.fetchall()  # So'rov natijalarini olamiz
+
+        # Yangi ish daftarini yaratish
+        wb = Workbook()
+        ws = wb.active
+
+        # Sarlavha qatorini qo'shish
+        ws.append(["User ID", "Phone", "Full Name"])
+
+        # Ma'lumotlarni Excel fayliga yozish
+        for row in filtered_data:
+            ws.append(row)
+
+        # Excel faylini saqlash
+        wb.save("users_data.xlsx")
+
+        with open('/home/shamsiddin/PycharmProjects/Uy_tozalash_bot/users_data.xlsx', 'rb') as file:
+            await message.reply_document(document=file, caption="Bu siz so'ragan fayl.")
 
