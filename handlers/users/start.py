@@ -297,6 +297,7 @@ async def process_ha_callback(callback_query: types.CallbackQuery):
 Ушбу ракамлар оркали сизга богланишади.</b></b>""")
 
 
+
 @dp.callback_query_handler(lambda c: c.data and c.data.startswith("yoq"))
 async def process_yoq_callback(callback_query: types.CallbackQuery):
     user_id = callback_query.message.from_user.id
