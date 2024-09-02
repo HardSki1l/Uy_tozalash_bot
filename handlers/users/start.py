@@ -249,38 +249,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 
 # all_category = []
-@dp.message_handler(state=Category.name)
-async def send_group_for_category(message: types.Message, state: FSMContext):
-    # print(True)
-    user_id = message.from_user.id
-    category_name = message.text
-    # print(category_name)
-    message_id = message.message_id
-    if category_name in category_all:
-        result = await add_choise_category(user_id=user_id, choises=category_name, message_id=message_id)
-        tayyor = ''
-        for i in result.split('//'):
-            if i not in tayyor:
-                tayyor += i + "\n"
-        try:
-            message_get_data = cursor.execute("SELECT message_id FROM choise_table WHERE user_id=?",
-                                              (int(user_id),)).fetchone()
-            print(message_get_data)
-            await bot.delete_message(chat_id=message.from_user.id, message_id=message_get_data[0])
-            new_id = await bot.send_message(chat_id=message.from_user.id, text=tayyor,
-                                            parse_mode="HTML", reply_markup=savat_btn)
-            cursor.execute("UPDATE choise_table SET message_id=? WHERE user_id=?", (new_id.message_id, user_id))
-            connect.commit()
-        except:
-            message_last = await message.answer(tayyor, reply_markup=savat_btn)
-            message_id_update = message_last.message_id
-            cursor.execute("UPDATE choise_table SET message_id=? WHERE user_id=?", (message_id_update, user_id))
-            connect.commit()
 
-
-    else:
-        # print("Bunday bo`lim mavjud emas")
-        await message.answer("Bunday bo'lim mavjud emas")
 
 
 @dp.callback_query_handler(lambda c: c.data and c.data.startswith("ha"))
@@ -409,4 +378,49 @@ async def reklama_text(message: types.Message, state: FSMContext):
     await message.answer("Reklama muvaffaqiyatli yuborildi!")
     await state.finish()
 
+
+@dp.message_handler(state=Category.name)
+async def send_group_for_category(message: types.Message, state: FSMContext):
+    # print(True)
+    user_id = message.from_user.id
+    category_name = message.text
+    # print(category_name)
+    message_id = message.message_id
+    if category_name in category_all:
+        result = await add_choise_category(user_id=user_id, choises=category_name, message_id=message_id)
+        tayyor = ''
+        for i in result.split('//'):
+            if i not in tayyor:
+                tayyor += i + "\n"
+        try:
+            message_get_data = cursor.execute("SELECT message_id FROM choise_table WHERE user_id=?",
+                                              (int(user_id),)).fetchone()
+            print(message_get_data)
+            await bot.delete_message(chat_id=message.from_user.id, message_id=message_get_data[0])
+            new_id = await bot.send_message(chat_id=message.from_user.id, text=tayyor,
+                                            parse_mode="HTML", reply_markup=savat_btn)
+            cursor.execute("UPDATE choise_table SET message_id=? WHERE user_id=?", (new_id.message_id, user_id))
+            connect.commit()
+        except:
+            message_last = await message.answer(tayyor, reply_markup=savat_btn)
+            message_id_update = message_last.message_id
+            cursor.execute("UPDATE choise_table SET message_id=? WHERE user_id=?", (message_id_update, user_id))
+            connect.commit()
+
+
+    else:
+        if message.text == "Orqaga 🔙" or "Назад 🔙":
+            await state.finish()
+            user_id = message.from_user.id
+            await record_stat(user_id)
+            if message.text == "Orqaga 🔙":
+                await message.answer(f"""
+        Tanlang:
+            """, reply_markup=menu_btn)
+            else:
+                await message.answer(f"""
+                Выберите:
+                    """, reply_markup=menu_btn_ru)
+        else:
+            await message.answer("Bunday bo'lim mavjud emas")
 
