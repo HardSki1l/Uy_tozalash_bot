@@ -3,6 +3,7 @@ from venv import logger
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
 from aiogram.types import InlineKeyboardButton
+from pyexpat.errors import messages
 
 from keyboards.default.button import *
 from loader import dp, bot
@@ -38,7 +39,7 @@ async def uzb_starthandler(message: types.Message):
 
 @dp.message_handler(state=Register.phone_number, content_types=types.ContentType.CONTACT)
 async def phone_number(message: types.Message, state: FSMContext):
-    print(True)
+    # print(True)
     contact = message.contact
     user_id = message.from_user.id
     await add_user(user_id, int(contact.phone_number))
@@ -87,14 +88,12 @@ async def jamixizmatlarr(message: types.Message):
     await Category.name.set()
 
 
-
 @dp.message_handler(text='Nam tozalash 💧')
 async def namxizmatlarr(message: types.Message):
     user_id = message.from_user.id
     await record_stat(user_id)
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=nam_xizmatlar_btn)
     await Category.name.set()
-
 
 
 @dp.message_handler(text='RoboClenda tozalash 🤖')
@@ -105,7 +104,6 @@ async def roboclean(message: types.Message):
     await Category.name.set()
 
 
-
 @dp.message_handler(text="Qo'shimcha xizmatlar ➕")
 async def qoshimchaxizmat(message: types.Message):
     user_id = message.from_user.id
@@ -114,9 +112,8 @@ async def qoshimchaxizmat(message: types.Message):
     await Category.name.set()
 
 
-
 @dp.message_handler(text="Orqaga 🔙", state="*")
-async def back(message: types.Message, state:FSMContext):
+async def back(message: types.Message, state: FSMContext):
     await state.finish()
     user_id = message.from_user.id
     await record_stat(user_id)
@@ -145,7 +142,7 @@ async def phones(message: types.Message, state: FSMContext):
     await record_stat(user_id)
     if phone_number:
         if message.text.startswith("+998"):
-            print(message.text[1:13])
+            # print(message.text[1:13])
             user_id = message.from_user.id
             await update_phone_number(user_id, phone_number)
             await message.answer("Telefon raqamingiz muvaffaqiyatli o'zgartirildi ✅", reply_markup=settings_btn)
@@ -184,36 +181,36 @@ async def deleteaccount(message: types.Message):
                          reply_markup=types.ReplyKeyboardRemove())
 
 
-@dp.message_handler(text="Savatcha 🛒")
-async def savat(message: types.Message):
-    user_id = message.from_user.id
+# @dp.message_handler(text="Savatcha 🛒")
+# async def savat(message: types.Message):
+#     user_id = message.from_user.id
+#     result = cursor.execute("SELECT choises FROM choise_table WHERE user_id=?", (int(user_id),)).fetchone()
+#     # print(result)
+#     a = ""
+#     if result:
+#         choises = result[0]
+#         choises_list = choises.split("//")
+#         for choise in choises_list:
+#             a += choise + "\n"
+#     await message.answer(f"<i><b>{message.from_user.full_name}</b></i> - Sizning zakazlaringiz👇🏻\n\n<i>{a}</i>",
+#                          reply_markup=savat_btn)
+
+
+@dp.callback_query_handler(state="*",text="tasdiqlash")
+async def zakaz(call: types.CallbackQuery, state:FSMContext):
+    user_id = call.message.chat.id
     result = cursor.execute("SELECT choises FROM choise_table WHERE user_id=?", (int(user_id),)).fetchone()
-    print(result)
+    # print(result)
+
     a = ""
     if result:
         choises = result[0]
         choises_list = choises.split("//")
         for choise in choises_list:
-            a += choise + "\n"
-
-    print(a)
-
-    await message.answer(f"<i><b>{message.from_user.full_name}</b></i> - Sizning zakazlaringiz👇🏻\n\n<i>{a}</i>", reply_markup=savat_btn)
-
-@dp.message_handler(text="Zakazni tasdiqlash✅")
-async def zakaz(message:types.Message):
-    user_id = message.from_user.id
-    result = cursor.execute("SELECT choises FROM choise_table WHERE user_id=?", (int(user_id),)).fetchone()
-    print(result)
-
-    a = ""
-    if result:
-        choises = result[0]
-        choises_list = choises.split("//")
-        for choise in choises_list:
-            a += choise + "\n"
+            if choise not in a:
+               a += choise + "\n"
     await record_stat(user_id)
-    user_id = message.from_user.id
+    user_id = call.message.chat.id
     keyboard_inline = InlineKeyboardMarkup()
     ha_button = InlineKeyboardButton(text="Ha✅", callback_data=f"ha {user_id}")
     yoq_button = InlineKeyboardButton(text="Yoq❌", callback_data=f"yoq {user_id}")
@@ -229,36 +226,69 @@ async def zakaz(message:types.Message):
     for i in user:
         latitude_user_map = i[4]
         longitude_user_map = i[3]
-    link = await generate_map_link(latitude_user_map,longitude_user_map)
+    link = await generate_map_link(latitude_user_map, longitude_user_map)
     for i in user:
         txt += f"""<b>Zakaz👇🏻✅\n\n{category_name}</b>\n\n\n<b>Foydalanuvchi raqami:  <i>+{i[2]}</i>📞</b>\n\n<b>Foydalanuvchi Ismi: <i>{i[5]}👤</i></b>\n\n<b> Lakatsiya 📍:  <a href="{link}">Lalatsiya</a></b>"""
-
-    print(txt)
-    await message.answer("Sizning sorovingiz yuborildi✅", reply_markup=menu_btn)
-    await bot.send_message(chat_id = -4568026716, text=txt, reply_markup=keyboard_inline)
+    # print(txt)
+    await call.message.answer("Sizning sorovingiz yuborildi✅", reply_markup=menu_btn)
+    await bot.send_message(chat_id=-1002173612484, text=txt, reply_markup=keyboard_inline)
     cursor.execute("DELETE FROM choise_table WHERE user_id=?", (int(user_id),))
     connect.commit()
+    await state.finish()
+
+
+@dp.callback_query_handler(state="*",text="radetish")
+async def rad(call: types.CallbackQuery):
+    user_id = call.from_user.id
+    cursor.execute("DELETE FROM choise_table WHERE user_id=?", (int(user_id),))
+    connect.commit()
+
+    await call.message.answer("Zakaz rad etildi")
+    await call.message.delete()
+
+
 async def generate_map_link(latitude, longitude):
     base_url = "https://www.google.com/maps?q="
     return f"{base_url}{latitude},{longitude}"
 
+
 from utils.db_api.databace import category_all
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
+
 # all_category = []
 @dp.message_handler(state=Category.name)
-async def send_group_for_category(message: types.Message, state:FSMContext):
-    print(True)
+async def send_group_for_category(message: types.Message, state: FSMContext):
+    # print(True)
     user_id = message.from_user.id
     category_name = message.text
-    print(category_name)
+    # print(category_name)
     message_id = message.message_id
     if category_name in category_all:
-        result = await add_choise_category(user_id=user_id, choises=category_name,message_id=message_id)
-        await message.answer(result)
-    else:
-        print("Bunday bo`lim mavjud emas")
-        return "Salom"
+        result = await add_choise_category(user_id=user_id, choises=category_name, message_id=message_id)
+        tayyor = ''
+        for i in result.split('//'):
+            if i not in tayyor:
+                tayyor += i + "\n"
+        try:
+            message_get_data = cursor.execute("SELECT message_id FROM choise_table WHERE user_id=?",
+                                              (int(user_id),)).fetchone()
+            print(message_get_data)
+            await bot.delete_message(chat_id=message.from_user.id, message_id=message_get_data[0])
+            new_id = await bot.send_message(chat_id=message.from_user.id, text=tayyor,
+                                            parse_mode="HTML", reply_markup=savat_btn)
+            cursor.execute("UPDATE choise_table SET message_id=? WHERE user_id=?", (new_id.message_id, user_id))
+            connect.commit()
+        except:
+            message_last = await message.answer(tayyor, reply_markup=savat_btn)
+            message_id_update = message_last.message_id
+            cursor.execute("UPDATE choise_table SET message_id=? WHERE user_id=?", (message_id_update, user_id))
+            connect.commit()
 
+
+    else:
+        # print("Bunday bo`lim mavjud emas")
+        await message.answer("Bunday bo'lim mavjud emas")
 
     # await record_stat(user_id)
     # user_id = message.from_user.id
@@ -285,6 +315,7 @@ async def send_group_for_category(message: types.Message, state:FSMContext):
     # await message.answer("Sizning sorovingiz yuborildi✅")
     # await bot.send_message(chat_id = -1002173612484, text=txt, reply_markup=keyboard_inline)
 
+
 @dp.callback_query_handler(lambda c: c.data and c.data.startswith("ha"))
 async def process_ha_callback(callback_query: types.CallbackQuery):
     user_id = callback_query.message.from_user.id
@@ -297,16 +328,14 @@ async def process_ha_callback(callback_query: types.CallbackQuery):
 Ушбу ракамлар оркали сизга богланишади.</b></b>""")
 
 
-
 @dp.callback_query_handler(lambda c: c.data and c.data.startswith("yoq"))
 async def process_yoq_callback(callback_query: types.CallbackQuery):
     user_id = callback_query.message.from_user.id
     await record_stat(user_id)
     user_id = callback_query.data.split()[1]
     await callback_query.message.answer(f"Foydalanuvchi zakazi rad etildi❌")
-    await callback_query.bot.send_message(user_id, "<b>Sizning zakazingiz qabul qilinmadi❌\n\n⚠️<b>Bizda hozirda bunday hizmat mavjud emas</b></b>")
-
-
+    await callback_query.bot.send_message(user_id,
+                                          "<b>Sizning zakazingiz qabul qilinmadi❌\n\n⚠️<b>Bizda hozirda bunday hizmat mavjud emas</b></b>")
 
 
 con = sqlite3.connect(f'{DB_PATH}/stats.db')
@@ -329,7 +358,7 @@ Admins_forBot = 259083453, 2020292717
 
 
 @dp.message_handler(commands="admin", state="*")
-async def admin_panel(message: types.Message , state: FSMContext):
+async def admin_panel(message: types.Message, state: FSMContext):
     await state.finish()
     await record_stat(message.from_user.id)
     user = message.from_user.id
@@ -357,6 +386,7 @@ async def show_stats(message: types.Message):
            f" └ Bugungi so'rovlar: {today_requests}"
     await message.reply(text)
 
+
 @dp.message_handler(text="Foydalanuvchilar 👥")
 async def check_user(message: types.Message):
     if message.from_user.id in Admins_forBot:
@@ -383,3 +413,31 @@ async def check_user(message: types.Message):
 
         with open('/home/shamsiddin/PycharmProjects/Uy_tozalash_bot/users_data.xlsx', 'rb') as file:
             await message.reply_document(document=file, caption="Bu siz so'ragan fayl.")
+
+
+@dp.message_handler(commands=['reklama'])
+async def reklama_command(message: types.Message):
+    await message.answer("Iltimos, reklama uchun rasmini yuboring 📸")
+    await Register.image.set()
+
+
+@dp.message_handler(content_types=['photo'], state=Register.image)
+async def reklama_image(message: types.Message, state: FSMContext):
+    photo = message.photo[-1]
+    photo_id = photo.file_id
+    await state.update_data(photo_id=photo_id)
+    await message.answer("Rasmdan keyingi ma'lumotlarni kiriting 📝")
+    await Register.text.set()
+
+
+@dp.message_handler(state=Register.text)
+async def reklama_text(message: types.Message, state: FSMContext):
+    text = message.text
+    data = await state.get_data()
+    photo_id = data.get('photo_id')
+    users = cursor.execute("SELECT user_id FROM users").fetchall()
+    for user in users:
+        await bot.send_photo(chat_id=user[0], photo=photo_id, caption=text)
+
+    await message.answer("Reklama muvaffaqiyatli yuborildi!")
+    await state.finish()

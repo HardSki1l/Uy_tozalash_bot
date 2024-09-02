@@ -11,3 +11,10 @@ class Register(StatesGroup):
 
 class Category(StatesGroup):
     name = State()
+
+class Register(StatesGroup):
+    phone_number = State()
+    location = State()
+    fullname = State()
+    image = State()
+    text = State()

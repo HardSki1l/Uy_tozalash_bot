@@ -35,10 +35,6 @@ menu_btn = ReplyKeyboardMarkup(
             KeyboardButton("Xizmatlar 💼"),
         ],
         [
-            KeyboardButton(text="Savatcha 🛒")
-        ]
-        ,
-        [
             KeyboardButton("Taklif Shikoyatlar ✍️"),
             KeyboardButton("Ijtimoiy Tarmoqlar 🌐")
         ],
@@ -56,7 +52,7 @@ xizmatlar_btn = ReplyKeyboardMarkup(
             KeyboardButton("Nam tozalash 💧")
         ],
         [
-            KeyboardButton("Umumiy Tozalash 🏚"),
+
             KeyboardButton("RoboClenda tozalash 🤖")
         ],
         [
@@ -212,12 +208,14 @@ admin_btn = ReplyKeyboardMarkup(
 )
 
 
-savat_btn = ReplyKeyboardMarkup(
-    keyboard=[
+
+from aiogram.types import InlineKeyboardButton , InlineKeyboardMarkup
+
+savat_btn = InlineKeyboardMarkup(
+    inline_keyboard=[
         [
-            KeyboardButton(text="Zakazni tasdiqlash✅")
+            InlineKeyboardButton(text="Zakazni tasdiqlash✅", callback_data="tasdiqlash"),
+            InlineKeyboardButton(text="Zakazlarni rad etish❌", callback_data="radetish")
         ]
     ],
-    resize_keyboard=True,
-    one_time_keyboard=True
 )
