@@ -97,7 +97,7 @@ async def xizmatlarr(message: types.Message):
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=xizmatlar_btn)
 
 
-@dp.message_handler(text='Jami xizmlatlar 🛠')
+@dp.message_handler(text='Jami xizmatlar 🛠')
 async def jamixizmatlarr(message: types.Message):
     user_id = message.from_user.id
     await record_stat(user_id)

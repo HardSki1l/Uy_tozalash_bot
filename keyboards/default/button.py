@@ -48,7 +48,7 @@ menu_btn = ReplyKeyboardMarkup(
 xizmatlar_btn = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton("Jami xizmlatlar 🛠"),
+            KeyboardButton("Jami xizmatlar 🛠"),
             KeyboardButton("Nam tozalash 💧")
         ],
         [
