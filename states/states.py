@@ -17,6 +17,15 @@ class Register_ru(StatesGroup):
     image = State()
     text = State()
 
+
+class Takliflar(StatesGroup):
+    textlar = State()
+
+
+class Takliflar_ru(StatesGroup):
+    textlar = State()
+
+
 class Category(StatesGroup):
     name = State()
 

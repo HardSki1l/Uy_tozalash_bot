@@ -48,8 +48,8 @@ menu_btn = ReplyKeyboardMarkup(
 xizmatlar_btn = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton("Jami xizmatlar 🛠"),
-            KeyboardButton("Nam tozalash 💧")
+            KeyboardButton("Генеральная уборка 🛠"),
+            KeyboardButton("Влажная уборка 💧")
         ],
         [
 
@@ -74,7 +74,7 @@ list1 = ["Hamma changini olish","Gilamni changini olish","Oboy changini olish","
 jamixizmatlar_btn = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton("Hamma changini olish"),
+            KeyboardButton("Polni changini olish"),
             KeyboardButton("Gilamni changini olish")
         ],
         [

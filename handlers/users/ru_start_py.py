@@ -30,6 +30,8 @@ async def phone_number(message: types.Message, state: FSMContext):
     await Register_ru.location.set()
 
 
+
+
 @dp.message_handler(state=Register_ru.location, content_types=types.ContentType.LOCATION)
 async def location(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
@@ -60,7 +62,7 @@ async def xizmatlarr(message: types.Message):
     await message.answer("Выберите одну из услуг:", reply_markup=xizmatlar_btn_ru)
 
 
-@dp.message_handler(text='Все услуги 🛠')
+@dp.message_handler(text='Генеральная уборка 🛠')
 async def jamixizmatlarr(message: types.Message):
     user_id = message.from_user.id
     await record_stat(user_id)
@@ -76,7 +78,7 @@ async def namxizmatlarr(message: types.Message):
     await Category_ru.name.set()
 
 
-@dp.message_handler(text='РобоКленда уборка 🤖')
+@dp.message_handler(text='Генеральная уборка с робоклином 🤖')
 async def roboclean(message: types.Message):
     user_id = message.from_user.id
     await record_stat(user_id)
@@ -137,6 +139,18 @@ async def changefullname(message: types.Message):
     await record_stat(user_id)
     await message.answer("Отправьте ваше новое имя и фамилию")
     await Register_ru.fullname.set()
+
+@dp.message_handler(text="Предложения и жалобы ✍️")
+async def taklif(message: types.Message):
+    await message.answer("<b>Введите свои предложения и жалобы✍️</b>")
+    await Takliflar_ru.textlar.set()
+
+@dp.message_handler(state=Takliflar_ru.textlar)
+async def handle_takliflar(message: types.Message, state: FSMContext):
+    await state.finish()
+    my_message=message.text
+    await bot.send_message(chat_id=-1002173612484, text=f"Получен запрос от пользователя - {message.from_user.full_name}\n\n<b>{my_message}</b>", reply_markup=menu_btn)
+    await message.answer("Предложение Ваши жалобы получены")
 
 
 @dp.message_handler(state=Register_ru.fullname)

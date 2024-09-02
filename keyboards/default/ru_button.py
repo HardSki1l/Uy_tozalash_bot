@@ -47,11 +47,11 @@ menu_btn_ru = ReplyKeyboardMarkup(
 xizmatlar_btn_ru = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton("Все услуги 🛠"),
+            KeyboardButton("Генеральная уборка 🛠"),
             KeyboardButton("Влажная уборка 💧")
         ],
         [
-            KeyboardButton("РобоКленда уборка 🤖")
+            KeyboardButton("Генеральная уборка с робоклином 🤖")
         ],
         [
             KeyboardButton("Дополнительные услуги ➕")
@@ -66,23 +66,23 @@ xizmatlar_btn_ru = ReplyKeyboardMarkup(
 jamixizmatlar_btn_ru = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton("Удаление пыли со всех мест"),
-            KeyboardButton("Удаление пыли с ковра")
+            KeyboardButton("обеспыливание и чистка полов"),
+            KeyboardButton("Обеспыливание ковров ")
         ],
         [
-            KeyboardButton("Удаление пыли с обоев"),
-            KeyboardButton("Удаление пыли с люстр")
+            KeyboardButton("Обеспыливание и чистка люстр"),
+            KeyboardButton("Обеспыливание  и чистка потолков")
         ],
         [
-            KeyboardButton("Удаление пыли с потолка"),
-            KeyboardButton("Уборка ванной")
+            KeyboardButton("Обеспыливание и чистка обои"),
+            KeyboardButton("Чистка ванн")
         ],
         [
-            KeyboardButton("Уборка туалета"),
-            KeyboardButton("Мытье окон")
+            KeyboardButton("чистка туалета. (Сан.узлов)"),
+            KeyboardButton("Чистка оконных блогов и стёкол")
         ],
         [
-            KeyboardButton("Удаление пыли с мебели"),
+            KeyboardButton("Чистка мебели"),
         ],
         [
             KeyboardButton("Назад 🔙")
@@ -94,15 +94,15 @@ jamixizmatlar_btn_ru = ReplyKeyboardMarkup(
 nam_xizmatlar_btn_ru = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton("Удаление пыли с пола"),
-            KeyboardButton("Удаление пыли с ковра")
+            KeyboardButton("обеспыливание и чистка полов"),
+            KeyboardButton("Обеспыливание ковров")
         ],
         [
-            KeyboardButton("Уборка санузла"),
-            KeyboardButton("Мытье окон")
+            KeyboardButton("Чистка ванн"),
+            KeyboardButton("чистка туалета. (Сан.узлов)")
         ],
         [
-            KeyboardButton("Удаление пыли с мебели")
+            KeyboardButton("Чистка оконных блогов и стёкол")
         ],
         [
             KeyboardButton("Назад 🔙")
@@ -114,28 +114,28 @@ nam_xizmatlar_btn_ru = ReplyKeyboardMarkup(
 Roboclean_btn_ru = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton("Удаление пыли с пола"),
-            KeyboardButton("Удаление пыли с ковра")
+            KeyboardButton("обеспыливание и чистка полов"),
+            KeyboardButton("Обеспыливание ковров")
         ],
         [
-            KeyboardButton("Удаление пыли с обоев"),
-            KeyboardButton("Удаление пыли с люстр")
+            KeyboardButton("Обеспыливание и чистка люстр"),
+            KeyboardButton("Обеспыливание  и чистка потолков")
         ],
         [
-            KeyboardButton("Удаление пыли с потолка"),
-            KeyboardButton("Уборка ванной")
+            KeyboardButton(" Обеспыливание и чистка обои"),
+            KeyboardButton("Чистка ванн")
         ],
         [
-            KeyboardButton("Уборка туалета"),
-            KeyboardButton("Мытье окон")
+            KeyboardButton("чистка туалета. (Сан.узлов)"),
+            KeyboardButton("Чистка оконных блогов и стёкол")
         ],
         [
-            KeyboardButton("Удаление пыли с мебели"),
-            KeyboardButton("Стирка ковров на месте")
+            KeyboardButton("Чистка мебели"),
+            KeyboardButton("Стирка ковров(на месте с робоклин")
         ],
         [
-            KeyboardButton("Химчистка дивана"),
-            KeyboardButton("Химчистка матраса")
+            KeyboardButton("Химчистка мебел"),
+            KeyboardButton("Химчистка матрасов")
         ],
         [
             KeyboardButton("Назад 🔙")
@@ -148,27 +148,26 @@ Roboclean_btn_ru = ReplyKeyboardMarkup(
 qoshimchaxizmatlar_ru = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton("Мытье посуды"),
-            KeyboardButton("Уборка одежды")
+            KeyboardButton("митьё посуд"),
+            KeyboardButton("Привести  порядок в гардеробах")
         ],
         [
-            KeyboardButton("Уборка подвала"),
-            KeyboardButton("Уборка вещей")
+            KeyboardButton("Уборка в подвалных помещениях "),
+            KeyboardButton("Поглаживание")
         ],
         [
-            KeyboardButton("Глажка одежды"),
-            KeyboardButton("Чистка брусчатки")
+            KeyboardButton("Мытья брусчаток"),
+            KeyboardButton("Чистка алюкобонд")
         ],
         [
-            KeyboardButton("Чистка аликафона"),
-            KeyboardButton("Косилка газона")
+            KeyboardButton("Стрижка газонов (газонокосилка)"),
+            KeyboardButton("Мытье и чистка фасад")
         ],
         [
-            KeyboardButton("Мытье фасада"),
-            KeyboardButton("Дезинфекция")
+            KeyboardButton("Дезинфекция "),
+            KeyboardButton("Митьё и поглаживание штор")
         ],
         [
-            KeyboardButton("Стирка и глажка штор"),
             KeyboardButton("Назад 🔙")
         ],
     ],

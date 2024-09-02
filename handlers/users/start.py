@@ -1,3 +1,4 @@
+from mailbox import Message
 from venv import logger
 
 from aiogram import types
@@ -97,7 +98,7 @@ async def xizmatlarr(message: types.Message):
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=xizmatlar_btn)
 
 
-@dp.message_handler(text='Jami xizmatlar 🛠')
+@dp.message_handler(text='Генеральная уборка 🛠')
 async def jamixizmatlarr(message: types.Message):
     user_id = message.from_user.id
     await record_stat(user_id)
@@ -105,7 +106,7 @@ async def jamixizmatlarr(message: types.Message):
     await Category.name.set()
 
 
-@dp.message_handler(text='Nam tozalash 💧')
+@dp.message_handler(text='Влажная уборка 💧')
 async def namxizmatlarr(message: types.Message):
     user_id = message.from_user.id
     await record_stat(user_id)
@@ -370,6 +371,19 @@ async def check_user(message: types.Message):
 async def reklama_command(message: types.Message):
     await message.answer("Iltimos, reklama uchun rasmini yuboring 📸")
     await Register.image.set()
+
+@dp.message_handler(text="Taklif Shikoyatlar ✍️")
+async def taklif(message: types.Message):
+    await message.answer("<b>Taklif va shikoyatlaringizni kiriting✍️</b>")
+    await Takliflar.textlar.set()
+
+@dp.message_handler(state=Takliflar.textlar)
+async def handle_takliflar(message: types.Message, state: FSMContext):
+    await state.finish()
+    my_message=message.text
+    await bot.send_message(chat_id=-1002173612484, text=f"Foydalanuvchidan taklif keldi - {message.from_user.full_name}\n\n<b>{my_message}</b>", reply_markup=menu_btn)
+    await message.answer("Taklif Shikoyatlaringiz qabul qilindi")
+
 
 
 @dp.message_handler(content_types=['photo'], state=Register.image)
