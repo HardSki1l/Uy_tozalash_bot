@@ -6,6 +6,7 @@ from aiogram.types import InlineKeyboardButton
 from pyexpat.errors import messages
 
 from keyboards.default.button import *
+from keyboards.default.ru_button import menu_btn_ru
 from loader import dp, bot
 from states.states import *
 from utils.db_api.databace import *
@@ -60,6 +61,7 @@ async def location(message: types.Message, state: FSMContext):
                          reply_markup=types.ReplyKeyboardRemove())
     await state.finish()
     await Register.fullname.set()
+    await Register.fullname.set()
 
 
 @dp.message_handler(state=Register.fullname)
@@ -112,14 +114,19 @@ async def qoshimchaxizmat(message: types.Message):
     await Category.name.set()
 
 
-@dp.message_handler(text="Orqaga 🔙", state="*")
+@dp.message_handler(text="Orqaga 🔙" and "Назад 🔙", state="*")
 async def back(message: types.Message, state: FSMContext):
     await state.finish()
     user_id = message.from_user.id
     await record_stat(user_id)
-    await message.answer(f"""
+    if message.text == "Orqaga 🔙":
+      await message.answer(f"""
 Tanlang:
     """, reply_markup=menu_btn)
+    else:
+        await message.answer(f"""
+        Выберите:
+            """, reply_markup=menu_btn_ru)
 
 
 @dp.message_handler(text="Sozlamalar ⚙️")
@@ -179,21 +186,6 @@ async def deleteaccount(message: types.Message):
     await record_stat(user_id)
     await message.answer("Profilingiz o'chirib yuborildi ✅\n\nYangi profil yaratish uchun /start ni bosing",
                          reply_markup=types.ReplyKeyboardRemove())
-
-
-# @dp.message_handler(text="Savatcha 🛒")
-# async def savat(message: types.Message):
-#     user_id = message.from_user.id
-#     result = cursor.execute("SELECT choises FROM choise_table WHERE user_id=?", (int(user_id),)).fetchone()
-#     # print(result)
-#     a = ""
-#     if result:
-#         choises = result[0]
-#         choises_list = choises.split("//")
-#         for choise in choises_list:
-#             a += choise + "\n"
-#     await message.answer(f"<i><b>{message.from_user.full_name}</b></i> - Sizning zakazlaringiz👇🏻\n\n<i>{a}</i>",
-#                          reply_markup=savat_btn)
 
 
 @dp.callback_query_handler(state="*",text="tasdiqlash")
@@ -289,31 +281,6 @@ async def send_group_for_category(message: types.Message, state: FSMContext):
     else:
         # print("Bunday bo`lim mavjud emas")
         await message.answer("Bunday bo'lim mavjud emas")
-
-    # await record_stat(user_id)
-    # user_id = message.from_user.id
-    # keyboard_inline = InlineKeyboardMarkup()
-    # ha_button = InlineKeyboardButton(text="Ha✅", callback_data=f"ha {user_id}")
-    # yoq_button = InlineKeyboardButton(text="Yoq❌", callback_data=f"yoq {user_id}")
-    # keyboard_inline.add(ha_button, yoq_button)
-    # global latitude_user_map
-    # global longitude_user_map
-    # await state.finish()
-    # category_name = message.text
-    #
-    # user = cursor.execute("SELECT * FROM users WHERE user_id=?", (user_id,)).fetchall()
-    #
-    # txt = ""
-    # for i in user:
-    #     latitude_user_map = i[4]
-    #     longitude_user_map = i[3]
-    # link = await generate_map_link(latitude_user_map,longitude_user_map)
-    # for i in user:
-    #     txt += f"""<b>Zakaz: {category_name}✅</b>\n\n\n<b>Foydalanuvchi raqami:  <i>+{i[2]}</i>📞</b>\n\n<b>Foydalanuvchi Ismi: <i>{i[5]}👤</i></b>\n\n<b> Lakatsiya 📍:  <a href="{link}">Lalatsiya</a></b>"""
-    #
-    # print(txt)
-    # await message.answer("Sizning sorovingiz yuborildi✅")
-    # await bot.send_message(chat_id = -1002173612484, text=txt, reply_markup=keyboard_inline)
 
 
 @dp.callback_query_handler(lambda c: c.data and c.data.startswith("ha"))
