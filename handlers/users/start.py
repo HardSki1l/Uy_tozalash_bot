@@ -441,3 +441,5 @@ async def reklama_text(message: types.Message, state: FSMContext):
 
     await message.answer("Reklama muvaffaqiyatli yuborildi!")
     await state.finish()
+
+
