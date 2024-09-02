@@ -15,17 +15,9 @@ Admins_forBot = 259083453, 2020292717
 @dp.message_handler(text="Русский🇷🇺")
 async def rus_starthandler(message: types.Message, state:FSMContext):
     user_id = message.from_user.id
-    user = cursor.execute("SELECT * FROM users WHERE user_id=?", (user_id,)).fetchall()
-    if user:
-        await message.answer(f"""
-Привет, {user[0][5]}
-
-Добро пожаловать в наш бот ✋🏼
-    """, reply_markup=menu_btn_ru)
-    else:
-        await message.answer(
-            f"Salom, <i>{message.from_user.full_name}</i>👤!\nKerakli tilni tanlang\n\nВыберите желаемый язык🇷🇺",
-            reply_markup=change_language_ru)
+    await record_stat(user_id)
+    await message.answer("<b>Отправьте свой номер телефона ☎️</b>", reply_markup=phone_number_btn_ru)
+    await Register_ru.phone_number.set()
 
 
 @dp.message_handler(state=Register_ru.phone_number, content_types=types.ContentType.CONTACT)
@@ -35,7 +27,7 @@ async def phone_number(message: types.Message, state: FSMContext):
     await add_user(user_id, int(contact.phone_number))
     await message.answer("<b>Отправьте свою локацию🗺</b> 📍", reply_markup=lokatsion_ru)
     await state.finish()
-    await Register.location.set()
+    await Register_ru.location.set()
 
 
 @dp.message_handler(state=Register_ru.location, content_types=types.ContentType.LOCATION)
