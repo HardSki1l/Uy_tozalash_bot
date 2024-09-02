@@ -14,6 +14,21 @@ from utils.db_api.databace import *
 fake_data = {}
 
 
+
+@dp.message_handler(text="Orqaga 🔙" or "Назад 🔙", state="*")
+async def back(message: types.Message, state: FSMContext):
+    await state.finish()
+    user_id = message.from_user.id
+    await record_stat(user_id)
+    if message.text == "Orqaga 🔙":
+        await message.answer(f"""
+            Tanlang:
+                """, reply_markup=menu_btn)
+    else:
+        await message.answer(f"""
+                    Выберите:
+                        """, reply_markup=menu_btn_ru)
+
 @dp.message_handler(CommandStart())
 async def bot_start(message: types.Message):
     user_id = message.from_user.id
