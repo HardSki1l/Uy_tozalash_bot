@@ -103,6 +103,15 @@ async def back(message: types.Message, state: FSMContext):
 Выберите:
     """, reply_markup=menu_btn_ru)
 
+@dp.message_handler(text="Социальные сети 🌐")
+async def set(message:types.Message):
+    from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+    button = InlineKeyboardButton(text="Открыть ссылку",
+                                  url="https://taplink.cc/universal_cleaning_tashkent?from=qr")
+    keyboard_ru = InlineKeyboardMarkup().add(button)
+
+    await message.answer("Нажмите кнопку, чтобы открыть ссылку:", reply_markup=keyboard_ru)
+
 
 @dp.message_handler(text="Настройки ⚙️")
 async def settingsuser(message: types.Message):

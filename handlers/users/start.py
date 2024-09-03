@@ -98,7 +98,7 @@ async def xizmatlarr(message: types.Message):
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=xizmatlar_btn)
 
 
-@dp.message_handler(text='Генеральная уборка 🛠')
+@dp.message_handler(text='Генеральная уборка  🛠')
 async def jamixizmatlarr(message: types.Message):
     user_id = message.from_user.id
     await record_stat(user_id)
@@ -106,15 +106,24 @@ async def jamixizmatlarr(message: types.Message):
     await Category.name.set()
 
 
-@dp.message_handler(text='Влажная уборка 💧')
+@dp.message_handler(text='Влажная уборка  💧')
 async def namxizmatlarr(message: types.Message):
     user_id = message.from_user.id
     await record_stat(user_id)
     await message.answer("Xizmatlar turidan birini tanlang:", reply_markup=nam_xizmatlar_btn)
     await Category.name.set()
 
+@dp.message_handler(text="Ijtimoiy Tarmoqlar 🌐")
+async def tarmoqlar(message:types.Message):
+    from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+    button = InlineKeyboardButton(text="Open link",
+                                  url="https://taplink.cc/universal_cleaning_tashkent?from=qr")
+    keyboard = InlineKeyboardMarkup().add(button)
 
-@dp.message_handler(text='RoboClenda tozalash 🤖')
+    await message.answer("Havolani ochish uchun tugmani bosing:", reply_markup=keyboard)
+
+
+@dp.message_handler(text='Генеральная уборка с робоклином  🤖')
 async def roboclean(message: types.Message):
     user_id = message.from_user.id
     await record_stat(user_id)

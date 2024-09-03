@@ -48,12 +48,12 @@ menu_btn = ReplyKeyboardMarkup(
 xizmatlar_btn = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton("Генеральная уборка 🛠"),
-            KeyboardButton("Влажная уборка 💧")
+            KeyboardButton("Генеральная уборка  🛠"),
+            KeyboardButton("Влажная уборка  💧")
         ],
         [
 
-            KeyboardButton("RoboClenda tozalash 🤖")
+            KeyboardButton("Генеральная уборка с робоклином  🤖")
         ],
         [
             KeyboardButton("Qo'shimcha xizmatlar ➕")
