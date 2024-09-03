@@ -142,7 +142,7 @@ async def phones(message: types.Message, state: FSMContext):
         await message.answer("Введите ваш номер телефона ❌")
 
 
-@dp.message_handler(text="Изменить имя и фамилию 👤")
+@dp.message_handler(text="Изменить ФИО 👤")
 async def changefullname(message: types.Message):
     user_id = message.from_user.id
     await record_stat(user_id)
