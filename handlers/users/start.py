@@ -213,7 +213,7 @@ async def deleteaccount(message: types.Message):
                          reply_markup=types.ReplyKeyboardRemove())
 
 
-@dp.callback_query_handler(state="*",text="tasdiqlash")
+@dp.callback_query_handler(state="*", text="tasdiqlash")
 async def zakaz(call: types.CallbackQuery, state:FSMContext):
     user_id = call.message.chat.id
     result = cursor.execute("SELECT choises FROM choise_table WHERE user_id=?", (int(user_id),)).fetchone()
